@@ -20,10 +20,26 @@ describe('Query utils', () => {
       })
     })
 
+    it('should keep undefined and null query values', () => {
+      const query = resolveQuery('', { a: undefined, b: null })
+      expect(query).toEqual({ a: undefined, b: null })
+    })
+
+    it('should keep objects query values', () => {
+      const query = resolveQuery('', { a: { nested: 'o' }, b: [{ a: true }] })
+      expect(query).toEqual({ a: { nested: 'o' }, b: [{ a: true }] })
+    })
+
+    it('should keep null query values in arrays', () => {
+      const query = resolveQuery('', { baz: [null, '2'] })
+      expect(query).toEqual({ baz: [null, '2'] })
+    })
+
     it('should cast query values into string', () => {
       const query = resolveQuery('foo=bar&foo=k', { baz: 1 })
       expect(query.baz).toBe('1')
     })
+
     it('should cast query array values into string', () => {
       const query = resolveQuery('foo=bar&foo=k', { baz: [1, '2'] })
       expect(query.baz).toEqual(['1', '2'])

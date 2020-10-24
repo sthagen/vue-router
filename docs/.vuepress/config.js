@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = ctx => ({
   locales: {
     '/': {
       lang: 'en-US',
@@ -53,15 +53,31 @@ module.exports = {
       }
     ]
   ],
-  serviceWorker: true,
-  theme: 'vue',
+  // theme: '@vuepress/vue',
+  plugins: [
+    [
+      '@vuepress/pwa',
+      {
+        serviceWorker: true,
+        updatePopup: true
+      }
+    ]
+  ],
   themeConfig: {
-    algolia: {
-      apiKey: 'f854bb46d3de7eeb921a3b9173bd0d4c',
-      indexName: 'vue-router'
+    algolia: ctx.isProd
+      ? {
+          apiKey: 'f854bb46d3de7eeb921a3b9173bd0d4c',
+          indexName: 'vue-router'
+        }
+      : null,
+    carbonAds: {
+      carbon: 'CEBICK3I',
+      custom: 'CEBICK3M',
+      placement: 'routervuejsorg'
     },
     repo: 'vuejs/vue-router',
     docsDir: 'docs',
+    smoothScroll: true,
     locales: {
       '/': {
         label: 'English',
@@ -259,7 +275,8 @@ module.exports = {
               '/ru/guide/advanced/transitions.md',
               '/ru/guide/advanced/data-fetching.md',
               '/ru/guide/advanced/scroll-behavior.md',
-              '/ru/guide/advanced/lazy-loading.md'
+              '/ru/guide/advanced/lazy-loading.md',
+              '/ru/guide/advanced/navigation-failures.md'
             ]
           }
         ]
@@ -366,4 +383,4 @@ module.exports = {
       }
     }
   }
-}
+})
